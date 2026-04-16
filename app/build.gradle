@@ -1,21 +1,32 @@
+plugins {
+    id 'com.android.application'
+}
+
 android {
-    compileSdkVersion 33
-    
-    // ADD THIS:
-    ndkVersion "25.1.8937393"
-    
+    compileSdk 33
+
     defaultConfig {
         applicationId "com.notifapi.app"
-        minSdkVersion 26
-        targetSdkVersion 33
+        minSdk 26
+        targetSdk 33
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
-        release { minifyEnabled false }
+        release {
+            minifyEnabled false
+        }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+dependencies {
+    implementation 'org.nanohttpd:nanohttpd:2.3.1'
+    implementation 'com.google.zxing:core:3.5.1'
+    implementation 'androidx.core:core:1.9.0'
 }
