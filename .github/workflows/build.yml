@@ -3,7 +3,7 @@ name: Build APK
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:   # manual trigger bhi enable hoga
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,12 +18,12 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3   # v3 use karo
+        uses: android-actions/setup-android@v3
 
       - name: Accept licenses
         run: yes | sdkmanager --licenses || true
 
-      - name: Install build tools
+      - name: Install platform tools
         run: sdkmanager "build-tools;33.0.2" "platforms;android-33"
 
       - name: Create local.properties
@@ -34,7 +34,17 @@ jobs:
         with:
           gradle-version: '7.6'
 
+      - name: Generate Gradle Wrapper   # ← YEH ADD KARO
+        run: gradle wrapper --gradle-version=7.6
+
       - name: Build Debug APK
+        run: ./gradlew :app:assembleDebug --stacktrace  # ← gradle → ./gradlew
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FamGateway-debug
+          path: app/build/outputs/apk/debug/*.apk      - name: Build Debug APK
         run: gradle :app:assembleDebug --stacktrace
 
       - name: Upload APK
